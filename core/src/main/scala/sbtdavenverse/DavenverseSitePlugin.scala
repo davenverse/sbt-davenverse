@@ -51,13 +51,17 @@ object DavenverseSitePlugin extends AutoPlugin {
   }
 
   override def buildSettings: Seq[Setting[_]] = Seq(
+    // Picks the closest scala 2 version towards the end of list of versions
     davenverseSiteScalaVersion := crossScalaVersions.value.toList.reverse.collect{
       case x if x.startsWith("2.13") => x
       case x if x.startsWith("2.12") => x
     }.headOption.getOrElse(scalaVersion.value), // What to do here if we don't have a valid scala 2 version
+    // default conditional is that its on the provided scala version
     davenverseSiteConditional := "matrix.scala == '" ++ davenverseSiteScalaVersion.value ++ "'",
+    // If site, then add ruby
     githubWorkflowBuildPreamble ++= rubySetupSteps(Some(davenverseSiteConditional.value)),
     githubWorkflowPublishPreamble ++= rubySetupSteps(None),
+    // On publish, create the site - site is expected to always be named site
     githubWorkflowPublish ++= Seq(
       WorkflowStep.Use("christopherdavenport", "create-ghpages-ifnotexists", "v1"),
       WorkflowStep.Sbt(

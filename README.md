@@ -29,6 +29,11 @@ lazy val site = project.in(file("site"))
   .enablePlugins(DavenverseSitePlugin)
   .disablePlugins(MimaPlugin)
   .dependsOn(core)
+  .settings(
+    micrositeDescription := "My Cool Project Does Stuff" // Override so your site has cool stuff on it.
+  )
+  // Site directory should put md files in /site/docs
+  // The gemfile provided in the included site directory should be up to date for it.
 ```
 
 Meanwhile on the other side of the coin if you don't want a microsite, then you might make something more minimal, in which case you don't need to add anymore settings to get full ci-testing, and the expected configurations in place.

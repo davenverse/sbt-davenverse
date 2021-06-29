@@ -52,10 +52,15 @@ object DavenversePlugin extends AutoPlugin {
   override def buildSettings: Seq[Setting[_]] = Seq(
     davenverseGithubOwner := gitRemoteInfo._1,
     davenverseGithubRepoName := gitRemoteInfo._2,
+
+    // Override organization in your build
     organization := "io.chrisdavenport",
+
+    // Override developers in your build
     developers := List(
       Developer("ChristopherDavenport", "Christopher Davenport", "chris@christopherdavenport.tech", url("https://github.com/ChristopherDavenport"))
     ),
+    // Override licenses in your build
     licenses ++= Seq("MIT" -> url("http://opensource.org/licenses/MIT")),
 
     homepage := Some(url("https://github.com/" + davenverseGithubOwner.value + "/" + davenverseGithubRepoName.value)),
@@ -70,9 +75,12 @@ object DavenversePlugin extends AutoPlugin {
     ),
 
     githubWorkflowArtifactUpload := false,
+    
+    // Settings I expect may need some sort of additional configuration in the future
     githubWorkflowBuild := Seq(WorkflowStep.Sbt(List("test", "mimaReportBinaryIssues"))),
     githubWorkflowPublishTargetBranches := Seq(RefPredicate.StartsWith(Ref.Tag("v")), RefPredicate.Equals(Ref.Branch("main"))),
     githubWorkflowTargetTags ++= Seq("v*"),
+    
     githubWorkflowPublishPreamble ++= Seq(WorkflowStep.Use("olafurpg", "setup-gpg", "v3")),
     githubWorkflowPublish ++= Seq(
       WorkflowStep.Sbt(
