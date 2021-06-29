@@ -3,23 +3,54 @@ package sbtdavenverse
 import sbt._
 import Keys._
 import sbtghactions.{GitHubActionsPlugin, GitHubActionsKeys, GenerativeKeys, WorkflowStep}, GitHubActionsPlugin._, GitHubActionsKeys._, GenerativeKeys._
-
+import _root_.microsites.MicrositesPlugin
 
 object DavenverseSitePlugin extends AutoPlugin {
 
-  override def requires = DavenversePlugin && plugins.JvmPlugin
+  override def requires = DavenversePlugin && MicrositesPlugin && plugins.JvmPlugin
 
   object autoImport {
     val davenverseSiteScalaVersion = settingKey[String]("Site Scala Release Version")
     val davenverseSiteConditional = settingKey[String]("Site Conditional When To Add Site Steps")
   }
   import autoImport._
+  import DavenversePlugin.autoImport._
 
   override def globalSettings: Seq[Setting[_]] = Seq()
 
   
 
-  override def projectSettings: Seq[Setting[_]] = Nil
+  override def projectSettings: Seq[Setting[_]] = {
+    import microsites.MicrositeKeys._
+    import microsites._
+    Seq(
+      micrositeName := davenverseGithubRepoName.value,
+      micrositeAuthor := davenverseGithubOwner.value,
+      micrositeGithubOwner := davenverseGithubOwner.value,
+      micrositeGithubRepo := davenverseGithubRepoName.value,
+      micrositeBaseUrl := "/" + davenverseGithubRepoName.value,
+      micrositeDocumentationUrl := "https://www.javadoc.io/doc/" + 
+        organization.value + "/" + davenverseGithubRepoName.value + "_2.13",
+      micrositeFooterText := None,
+      micrositeHighlightTheme := "atom-one-light",
+      micrositePalette := Map(
+        "brand-primary" -> "#3e5b95",
+        "brand-secondary" -> "#294066",
+        "brand-tertiary" -> "#2d5799",
+        "gray-dark" -> "#49494B",
+        "gray" -> "#7B7B7E",
+        "gray-light" -> "#E5E5E6",
+        "gray-lighter" -> "#F4F3F4",
+        "white-color" -> "#FFFFFF"
+      ),
+      micrositePushSiteWith := GitHub4s,
+      micrositeGithubToken := sys.env.get("GITHUB_TOKEN"),
+      micrositeExtraMdFiles := Map(
+          file("CODE_OF_CONDUCT.md")  -> ExtraMdFileConfig("code-of-conduct.md",   "page", Map("title" -> "code of conduct",   "section" -> "code of conduct",   "position" -> "100")),
+          file("LICENSE")             -> ExtraMdFileConfig("license.md",   "page", Map("title" -> "license",   "section" -> "license",   "position" -> "101"))
+      )
+    )
+  }
 
   override def buildSettings: Seq[Setting[_]] = Seq(
     davenverseSiteScalaVersion := crossScalaVersions.value.toList.reverse.collect{
