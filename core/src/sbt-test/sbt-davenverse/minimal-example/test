@@ -1,0 +1,6 @@
+> clean
+
+# Check Github Workflow is consistent with expected
+> githubWorkflowGenerate
+> githubWorkflowCheck
+$ must-mirror expected-ci.yml .github/workflows/ci.yml

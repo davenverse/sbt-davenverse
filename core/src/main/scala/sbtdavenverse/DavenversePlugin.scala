@@ -11,8 +11,7 @@ object DavenversePlugin extends AutoPlugin {
   override def trigger = allRequirements
 
   override def requires = GitHubActionsPlugin &&
-    MimaPlugin &&
-    CrossPlugin &&
+    // CrossPlugin &&
     plugins.JvmPlugin
 
   object autoImport {
@@ -51,7 +50,8 @@ object DavenversePlugin extends AutoPlugin {
   )
 
   override def buildSettings: Seq[Setting[_]] = Seq(
-    davenverseGithubOwner := "davenverse",
+    davenverseGithubOwner := gitRemoteInfo._1,
+    davenverseGithubRepoName := gitRemoteInfo._2,
     organization := "io.chrisdavenport",
     developers := List(
       Developer("ChristopherDavenport", "Christopher Davenport", "chris@christopherdavenport.tech", url("https://github.com/ChristopherDavenport"))
@@ -87,6 +87,29 @@ object DavenversePlugin extends AutoPlugin {
       )
     )
   )
+
+    /** Gets the Github user and repository from the git remote info */
+  private val gitRemoteInfo = {
+    import scala.sys.process._
+
+    val identifier = """([^\/]+)"""
+
+    val GitHubHttps   = s"https://github.com/$identifier/$identifier".r
+    val SSHConnection = s"git@github.com:$identifier/$identifier.git".r
+
+    try {
+      val remote = List("git", "ls-remote", "--get-url", "origin").!!.trim()
+
+      remote match {
+        case GitHubHttps(user, repo)   => (user, repo)
+        case SSHConnection(user, repo) => (user, repo)
+        case _                         => ("", "")
+      }
+    } catch {
+      case scala.util.control.NonFatal(_) => ("", "")
+    }
+  }
+
 }
 /*
   */

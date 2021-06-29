@@ -7,7 +7,7 @@ import _root_.microsites.MicrositesPlugin
 
 object DavenverseSitePlugin extends AutoPlugin {
 
-  override def requires = DavenversePlugin && MicrositesPlugin && plugins.JvmPlugin
+  override def requires = MicrositesPlugin && DavenversePlugin
 
   object autoImport {
     val davenverseSiteScalaVersion = settingKey[String]("Site Scala Release Version")
@@ -64,7 +64,10 @@ object DavenverseSitePlugin extends AutoPlugin {
         List("site/publishMicrosite"),
         name = Some("Publish microsite")
       )
-    )
+    ),
+    githubWorkflowBuild ++= Seq(WorkflowStep.Sbt(
+    List("site/makeMicrosite"),
+    cond = Some(davenverseSiteConditional.value)))
   )
 
   def rubySetupSteps(cond: Option[String]) = Seq(

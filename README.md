@@ -12,3 +12,4 @@ libraryDependencies ++= Seq(
   "io.chrisdavenport" %% "sbt-davenverse" % "<version>"
 )
 ```
+
