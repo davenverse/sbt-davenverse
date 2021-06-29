@@ -18,8 +18,6 @@ object DavenverseSitePlugin extends AutoPlugin {
 
   override def globalSettings: Seq[Setting[_]] = Seq()
 
-  
-
   override def projectSettings: Seq[Setting[_]] = {
     import microsites.MicrositeKeys._
     import microsites._

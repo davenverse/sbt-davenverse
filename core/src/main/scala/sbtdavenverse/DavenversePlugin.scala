@@ -8,6 +8,8 @@ import sbtcrossproject.CrossPlugin
 
 object DavenversePlugin extends AutoPlugin {
 
+  override def trigger = allRequirements
+
   override def requires = GitHubActionsPlugin &&
     MimaPlugin &&
     CrossPlugin &&
