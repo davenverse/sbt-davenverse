@@ -26,7 +26,7 @@ object DavenverseSitePlugin extends AutoPlugin {
       micrositeAuthor := davenverseGithubOwner.value,
       micrositeGithubOwner := davenverseGithubOwner.value,
       micrositeGithubRepo := davenverseGithubRepoName.value,
-      micrositeBaseUrl := "/" + davenverseGithubRepoName.value,
+      micrositeBaseUrl := davenverseGithubRepoName.value,
       micrositeDocumentationUrl := "https://www.javadoc.io/doc/" + 
         organization.value + "/" + davenverseGithubRepoName.value + "_2.13",
       micrositeFooterText := None,
@@ -46,6 +46,14 @@ object DavenverseSitePlugin extends AutoPlugin {
       micrositeExtraMdFiles := Map(
           file("CODE_OF_CONDUCT.md")  -> ExtraMdFileConfig("code-of-conduct.md",   "page", Map("title" -> "code of conduct",   "section" -> "code of conduct",   "position" -> "100")),
           file("LICENSE")             -> ExtraMdFileConfig("license.md",   "page", Map("title" -> "license",   "section" -> "license",   "position" -> "101"))
+      ),
+      scalacOptions --= Seq(
+        "-Xfatal-warnings",
+        "-Ywarn-unused-import",
+        "-Ywarn-numeric-widen",
+        "-Ywarn-dead-code",
+        "-Ywarn-unused:imports",
+        "-Xlint:-missing-interpolator,_"
       )
     )
   }
