@@ -6,7 +6,7 @@ import sbtghactions.{GitHubActionsPlugin, GitHubActionsKeys, GenerativeKeys, Wor
 import _root_.microsites.MicrositesPlugin
 import _root_.io.chrisdavenport.sbt.nopublish.NoPublishPlugin
 
-object DavenverseSitePlugin extends AutoPlugin {
+object DavenverseMicrositePlugin extends AutoPlugin {
 
   override def requires = MicrositesPlugin && DavenversePlugin && NoPublishPlugin
 

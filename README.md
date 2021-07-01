@@ -25,8 +25,7 @@ lazy val core = project.in(file("core"))
   .settings(name := "my-cool-project")
 
 lazy val site = project.in(file("site"))
-  .enablePlugins(NoPublishPlugin)
-  .enablePlugins(DavenverseSitePlugin)
+  .enablePlugins(DavenverseMicrositePlugin)
   .disablePlugins(MimaPlugin)
   .dependsOn(core)
   .settings(
@@ -34,6 +33,15 @@ lazy val site = project.in(file("site"))
   )
   // Site directory should put md files in /site/docs
   // The gemfile provided in the included site directory should be up to date for it.
+
+// Override organization in your build
+ThisBuild / organization := "io.chrisdavenport",
+// Override developers in your build
+ThisBuild / developers := List(
+  Developer("ChristopherDavenport", "Christopher Davenport", "chris@christopherdavenport.tech", url("https://github.com/ChristopherDavenport"))
+),
+// Override licenses in your build
+ThisBuild / licenses := Seq("MIT" -> url("http://opensource.org/licenses/MIT")),
 ```
 
 Meanwhile on the other side of the coin if you don't want a microsite, then you might make something more minimal, in which case you don't need to add anymore settings to get full ci-testing, and the expected configurations in place.
@@ -41,6 +49,16 @@ Meanwhile on the other side of the coin if you don't want a microsite, then you 
 
 ```sbt
 name := "minimal-example"
+
+
+// Override organization in your build
+ThisBuild / organization := "io.chrisdavenport",
+// Override developers in your build
+ThisBuild / developers := List(
+  Developer("ChristopherDavenport", "Christopher Davenport", "chris@christopherdavenport.tech", url("https://github.com/ChristopherDavenport"))
+),
+// Override licenses in your build
+ThisBuild / licenses := Seq("MIT" -> url("http://opensource.org/licenses/MIT")),
 ```
 
 
