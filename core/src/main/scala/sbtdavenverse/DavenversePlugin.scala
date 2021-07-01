@@ -82,7 +82,7 @@ object DavenversePlugin extends AutoPlugin {
     githubWorkflowTargetTags ++= Seq("v*"),
     
     githubWorkflowPublishPreamble ++= Seq(WorkflowStep.Use("olafurpg", "setup-gpg", "v3")),
-    githubWorkflowPublish ++= Seq(
+    githubWorkflowPublish := Seq(
       WorkflowStep.Sbt(
         List("ci-release"),
         name = Some("Publish artifacts to Sonatype"),
