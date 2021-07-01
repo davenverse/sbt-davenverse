@@ -10,7 +10,6 @@ lazy val core = project.in(file("core"))
   .settings(name := "site-example")
 
 lazy val site = project.in(file("site"))
-  .enablePlugins(NoPublishPlugin)
-  .enablePlugins(DavenverseSitePlugin)
+  .enablePlugins(DavenverseMicrositePlugin)
   .disablePlugins(MimaPlugin)
   .dependsOn(core)

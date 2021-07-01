@@ -2,24 +2,17 @@ package sbtdavenverse
 
 import sbt._
 import Keys._
-import sbtghactions.{GitHubActionsPlugin, GitHubActionsKeys, GenerativeKeys, WorkflowStep, Ref, RefPredicate}, GitHubActionsPlugin._, GitHubActionsKeys._, GenerativeKeys._
-import com.typesafe.tools.mima.plugin.MimaPlugin
-import sbtcrossproject.CrossPlugin
 
 object DavenversePlugin extends AutoPlugin {
 
   override def trigger = allRequirements
 
-  override def requires = GitHubActionsPlugin &&
-    // CrossPlugin &&
-    plugins.JvmPlugin
+  override def requires = plugins.JvmPlugin
 
   object autoImport {
     lazy val isDotty = settingKey[Boolean]("True if building with Scala 3")
-
     lazy val davenverseGithubOwner = settingKey[String]("Github User or Organization which hosts repo")
     lazy val davenverseGithubRepoName = settingKey[String]("Github Repo Name")
-
   }
   import autoImport._
 
@@ -60,8 +53,9 @@ object DavenversePlugin extends AutoPlugin {
     developers := List(
       Developer("ChristopherDavenport", "Christopher Davenport", "chris@christopherdavenport.tech", url("https://github.com/ChristopherDavenport"))
     ),
+
     // Override licenses in your build
-    licenses ++= Seq("MIT" -> url("http://opensource.org/licenses/MIT")),
+    licenses := Seq("MIT" -> url("http://opensource.org/licenses/MIT")),
 
     homepage := Some(url("https://github.com/" + davenverseGithubOwner.value + "/" + davenverseGithubRepoName.value)),
 
@@ -73,31 +67,10 @@ object DavenversePlugin extends AutoPlugin {
           davenverseGithubOwner.value + "/" + davenverseGithubRepoName.value + 
           "/blob/v" + version.value + "€{FILE_PATH}.scala"
     ),
-
-    githubWorkflowArtifactUpload := false,
-    
-    // Settings I expect may need some sort of additional configuration in the future
-    githubWorkflowBuild := Seq(WorkflowStep.Sbt(List("test", "mimaReportBinaryIssues"))),
-    githubWorkflowPublishTargetBranches := Seq(RefPredicate.StartsWith(Ref.Tag("v")), RefPredicate.Equals(Ref.Branch("main"))),
-    githubWorkflowTargetTags ++= Seq("v*"),
-    
-    githubWorkflowPublishPreamble ++= Seq(WorkflowStep.Use("olafurpg", "setup-gpg", "v3")),
-    githubWorkflowPublish := Seq(
-      WorkflowStep.Sbt(
-        List("ci-release"),
-        name = Some("Publish artifacts to Sonatype"),
-        env = Map(
-          "PGP_PASSPHRASE" -> "${{ secrets.PGP_PASSPHRASE }}",
-          "PGP_SECRET" -> "${{ secrets.PGP_SECRET }}",
-          "SONATYPE_PASSWORD" -> "${{ secrets.SONATYPE_PASSWORD }}",
-          "SONATYPE_USERNAME" -> "${{ secrets.SONATYPE_USERNAME }}"
-        )
-      )
-    )
   )
 
-    /** Gets the Github user and repository from the git remote info */
-  private val gitRemoteInfo = {
+  /** Gets the Github user and repository from the git remote info */
+  private[sbtdavenverse] val gitRemoteInfo = {
     import scala.sys.process._
 
     val identifier = """([^\/]+)"""
@@ -119,5 +92,3 @@ object DavenversePlugin extends AutoPlugin {
   }
 
 }
-/*
-  */

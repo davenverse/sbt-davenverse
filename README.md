@@ -16,6 +16,15 @@ A basic setup for a page with a website like these other website might look like
 ```sbt
 ThisBuild / crossScalaVersions := Seq("2.12.13", "2.13.5")
 
+// Override organization in your build
+ThisBuild / organization := "io.chrisdavenport",
+// Override developers in your build
+ThisBuild / developers := List(
+  Developer("ChristopherDavenport", "Christopher Davenport", "chris@christopherdavenport.tech", url("https://github.com/ChristopherDavenport"))
+),
+// Override licenses in your build
+ThisBuild / licenses := Seq("MIT" -> url("http://opensource.org/licenses/MIT")),
+
 lazy val `my-cool-project` = project.in(file("."))
   .disablePlugins(MimaPlugin)
   .enablePlugins(NoPublishPlugin)
@@ -25,8 +34,7 @@ lazy val core = project.in(file("core"))
   .settings(name := "my-cool-project")
 
 lazy val site = project.in(file("site"))
-  .enablePlugins(NoPublishPlugin)
-  .enablePlugins(DavenverseSitePlugin)
+  .enablePlugins(DavenverseMicrositePlugin)
   .disablePlugins(MimaPlugin)
   .dependsOn(core)
   .settings(
@@ -41,6 +49,14 @@ Meanwhile on the other side of the coin if you don't want a microsite, then you 
 
 ```sbt
 name := "minimal-example"
+// Override organization in your build
+ThisBuild / organization := "io.chrisdavenport",
+// Override developers in your build
+ThisBuild / developers := List(
+  Developer("ChristopherDavenport", "Christopher Davenport", "chris@christopherdavenport.tech", url("https://github.com/ChristopherDavenport"))
+),
+// Override licenses in your build
+ThisBuild / licenses := Seq("MIT" -> url("http://opensource.org/licenses/MIT")),
 ```
 
 
