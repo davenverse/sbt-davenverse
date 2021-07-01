@@ -4,10 +4,11 @@ import sbt._
 import Keys._
 import sbtghactions.{GitHubActionsPlugin, GitHubActionsKeys, GenerativeKeys, WorkflowStep}, GitHubActionsPlugin._, GitHubActionsKeys._, GenerativeKeys._
 import _root_.microsites.MicrositesPlugin
+import _root_.io.chrisdavenport.sbt.nopublish.NoPublishPlugin
 
 object DavenverseSitePlugin extends AutoPlugin {
 
-  override def requires = MicrositesPlugin && DavenversePlugin
+  override def requires = MicrositesPlugin && DavenversePlugin && NoPublishPlugin
 
   object autoImport {
     val davenverseSiteScalaVersion = settingKey[String]("Site Scala Release Version")
