@@ -54,7 +54,8 @@ object DavenverseSitePlugin extends AutoPlugin {
         "-Ywarn-dead-code",
         "-Ywarn-unused:imports",
         "-Xlint:-missing-interpolator,_"
-      )
+      ),
+      includeFilter := "*.html" | "*.css" | "*.png" | "*.jpg" | "*.gif" | "*.js" | "*.swf" | "*.md" | "*.svg",
     )
   }
 
