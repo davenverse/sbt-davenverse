@@ -89,9 +89,6 @@ jobs:
 
       - uses: olafurpg/setup-gpg@v3
 
-      - name: Publish project
-        run: sbt ++${{ matrix.scala }} +publish
-
       - name: Publish artifacts to Sonatype
         env:
           PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
