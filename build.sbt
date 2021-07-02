@@ -7,7 +7,6 @@ ThisBuild / crossScalaVersions := Seq(Scala212)
 ThisBuild / scalaVersion := crossScalaVersions.value.last
 
 ThisBuild / githubWorkflowArtifactUpload := false
-ThisBuild / githubWorkflowJavaVersions := Seq("adopt@1.8", "adopt@1.11")
 
 val Scala212Cond = s"matrix.scala == '$Scala212'"
 
