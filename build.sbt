@@ -1,17 +1,19 @@
 import sbtcrossproject.CrossPlugin.autoImport.{crossProject, CrossType}
+import sbtghactions.UseRef
 
-val Scala212 = "2.12.13"
+val Scala212 = "2.12.14"
 
 ThisBuild / crossScalaVersions := Seq(Scala212)
 ThisBuild / scalaVersion := crossScalaVersions.value.last
 
 ThisBuild / githubWorkflowArtifactUpload := false
+ThisBuild / githubWorkflowJavaVersions := Seq("adopt@1.8", "adopt@1.11")
 
 val Scala212Cond = s"matrix.scala == '$Scala212'"
 
 def rubySetupSteps(cond: Option[String]) = Seq(
   WorkflowStep.Use(
-    "ruby", "setup-ruby", "v1",
+    UseRef.Public("ruby", "setup-ruby", "v1"),
     name = Some("Setup Ruby"),
     params = Map("ruby-version" -> "3.0.1"),
     cond = cond),
@@ -40,7 +42,7 @@ ThisBuild / githubWorkflowPublishTargetBranches :=
   Seq(RefPredicate.StartsWith(Ref.Tag("v")), RefPredicate.Equals(Ref.Branch("main")))
 
 ThisBuild / githubWorkflowPublishPreamble ++=
-  WorkflowStep.Use("olafurpg", "setup-gpg", "v3") +: rubySetupSteps(None)
+  WorkflowStep.Use(UseRef.Public("olafurpg", "setup-gpg", "v3")) +: rubySetupSteps(None)
 
 ThisBuild / githubWorkflowPublish := Seq(
   WorkflowStep.Sbt(
@@ -51,7 +53,7 @@ ThisBuild / githubWorkflowPublish := Seq(
       "PGP_SECRET" -> "${{ secrets.PGP_SECRET }}",
       "SONATYPE_PASSWORD" -> "${{ secrets.SONATYPE_PASSWORD }}",
       "SONATYPE_USERNAME" -> "${{ secrets.SONATYPE_USERNAME }}")),
-  WorkflowStep.Use("christopherdavenport", "create-ghpages-ifnotexists", "v1"),
+  WorkflowStep.Use(UseRef.Public("christopherdavenport", "create-ghpages-ifnotexists", "v1")),
   WorkflowStep.Sbt(
     List("site/publishMicrosite"),
     name = Some("Publish microsite")
@@ -70,7 +72,7 @@ val log4catsV = "1.1.1"
 
 val munitCatsEffectV = "0.12.0"
 
-val kindProjectorV = "0.11.3"
+val kindProjectorV = "0.13.0"
 val betterMonadicForV = "0.3.1"
 
 // Projects
@@ -94,7 +96,7 @@ lazy val core = project.in(file("core"))
 
     addSbtPlugin("com.geirsson" % "sbt-ci-release" % "1.5.7"),
 
-    addSbtPlugin("com.codecommit" % "sbt-github-actions" % "0.9.5"),
+    addSbtPlugin("com.codecommit" % "sbt-github-actions" % "0.12.0"),
 
     addSbtPlugin("org.scalameta" % "sbt-mdoc" % "2.2.21"),
     addSbtPlugin("com.47deg" % "sbt-microsites" % "1.3.4"),
