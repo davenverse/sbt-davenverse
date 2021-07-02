@@ -19,6 +19,7 @@ object DavenverseGithubActionsPlugin extends AutoPlugin {
 
   override def buildSettings: Seq[Setting[_]] = Seq(
     githubWorkflowArtifactUpload := false,
+    githubWorkflowJavaVersions := Seq("adopt@1.8", "adopt@1.11"),
     // Settings I expect may need some sort of additional configuration in the future
     githubWorkflowBuild := Seq(WorkflowStep.Sbt(List("test", "mimaReportBinaryIssues"))),
     githubWorkflowPublishTargetBranches := Seq(RefPredicate.StartsWith(Ref.Tag("v")), RefPredicate.Equals(Ref.Branch("main"))),
