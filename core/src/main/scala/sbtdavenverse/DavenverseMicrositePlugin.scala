@@ -2,7 +2,7 @@ package sbtdavenverse
 
 import sbt._
 import Keys._
-import sbtghactions.{GitHubActionsPlugin, GitHubActionsKeys, GenerativeKeys, WorkflowStep}, GitHubActionsPlugin._, GitHubActionsKeys._, GenerativeKeys._
+import sbtghactions.{GitHubActionsPlugin, GitHubActionsKeys, GenerativeKeys, WorkflowStep, UseRef}, GitHubActionsPlugin._, GitHubActionsKeys._, GenerativeKeys._
 import _root_.microsites.MicrositesPlugin
 import _root_.io.chrisdavenport.sbt.nopublish.NoPublishPlugin
 
@@ -28,7 +28,7 @@ object DavenverseMicrositePlugin extends AutoPlugin {
       micrositeGithubOwner := davenverseGithubOwner.value,
       micrositeGithubRepo := davenverseGithubRepoName.value,
       micrositeBaseUrl := davenverseGithubRepoName.value,
-      micrositeDocumentationUrl := "https://www.javadoc.io/doc/" + 
+      micrositeDocumentationUrl := "https://www.javadoc.io/doc/" +
         organization.value + "/" + davenverseGithubRepoName.value + "_2.13",
       micrositeFooterText := None,
       micrositeHighlightTheme := "atom-one-light",
@@ -73,7 +73,7 @@ object DavenverseMicrositePlugin extends AutoPlugin {
     githubWorkflowPublishPreamble ++= rubySetupSteps(None),
     // On publish, create the site - site is expected to always be named site
     githubWorkflowPublish ++= Seq(
-      WorkflowStep.Use("christopherdavenport", "create-ghpages-ifnotexists", "v1"),
+      WorkflowStep.Use(UseRef.Public("christopherdavenport", "create-ghpages-ifnotexists", "v1")),
       WorkflowStep.Sbt(
         List("site/publishMicrosite"),
         name = Some("Publish microsite")
@@ -86,7 +86,7 @@ object DavenverseMicrositePlugin extends AutoPlugin {
 
   def rubySetupSteps(cond: Option[String]) = Seq(
     WorkflowStep.Use(
-      "ruby", "setup-ruby", "v1",
+      UseRef.Public("ruby", "setup-ruby", "v1"),
       name = Some("Setup Ruby"),
       params = Map("ruby-version" -> "3.0.1"),
       cond = cond),
