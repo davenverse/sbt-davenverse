@@ -32,6 +32,11 @@ object DavenversePlugin extends AutoPlugin {
           compilerPlugin("org.typelevel" % "kind-projector" % "0.13.0" cross CrossVersion.full),
         )
     },
+    scalacOptions ++= {
+      val s = "-Ypartial-unification"
+      if (scalaVersion.value.startsWith("2.12") && !scalacOptions.value.contains(s)) Seq(s)
+      else Seq()
+    },
 
     Compile / doc/ sources := {
       val old = (Compile / doc / sources).value
