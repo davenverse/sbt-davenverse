@@ -28,7 +28,7 @@ ThisBuild / githubWorkflowBuildPreamble ++=
   rubySetupSteps(Some(Scala212Cond))
 
 ThisBuild / githubWorkflowBuild := Seq(
-  WorkflowStep.Sbt(List("test", "mimaReportBinaryIssues")),
+  WorkflowStep.Sbt(List("test")),
 
   WorkflowStep.Sbt(
     List("site/makeMicrosite"),
