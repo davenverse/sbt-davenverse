@@ -9,7 +9,7 @@ addSbtPlugin("org.scala-js" % "sbt-scalajs" % "1.6.0")
 
 addSbtPlugin("com.geirsson" % "sbt-ci-release" % "1.5.7")
 
-addSbtPlugin("com.codecommit" % "sbt-github-actions" % "0.12.0")
+addSbtPlugin("com.codecommit" % "sbt-github-actions" % "0.14.2")
 
 addSbtPlugin("org.scalameta" % "sbt-mdoc" % "2.2.21")
 addSbtPlugin("com.47deg" % "sbt-microsites" % "1.3.4")
