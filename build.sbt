@@ -99,7 +99,7 @@ lazy val core = project.in(file("core"))
 
     addSbtPlugin("org.scalameta" % "sbt-mdoc" % "2.2.21"),
     addSbtPlugin("com.47deg" % "sbt-microsites" % "1.3.4"),
-    addSbtPlugin("com.typesafe.sbt" % "sbt-ghpages" % "0.6.3"),
+    addSbtPlugin("com.github.sbt" % "sbt-ghpages" % "0.8.0"),
 
     scriptedBufferLog := false,
     scriptedLaunchOpts := { scriptedLaunchOpts.value ++
