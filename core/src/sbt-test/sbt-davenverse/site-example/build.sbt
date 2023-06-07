@@ -1,5 +1,5 @@
 
-ThisBuild / crossScalaVersions := Seq("2.12.14", "2.13.6")
+ThisBuild / crossScalaVersions := Seq("2.12.18", "2.13.6")
 
 lazy val `site-example` = project.in(file("."))
   .disablePlugins(MimaPlugin)

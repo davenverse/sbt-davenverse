@@ -17,7 +17,7 @@ object DavenversePlugin extends AutoPlugin {
   import autoImport._
 
   override def globalSettings: Seq[Setting[_]] = Seq(
-    crossScalaVersions := Seq("2.12.14", "2.13.6", "3.0.0"),
+    crossScalaVersions := Seq("2.12.18", "2.13.6", "3.0.0"),
     Def.derive(scalaVersion := crossScalaVersions.value.last, default = true),
     Def.derive(isDotty := scalaVersion.value.startsWith("3."))
   )
