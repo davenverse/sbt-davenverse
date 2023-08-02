@@ -1,6 +1,6 @@
 // addSbtPlugin("io.github.davidgregory084" % "sbt-tpolecat" % "0.1.16")
 
-addSbtPlugin("com.typesafe" % "sbt-mima-plugin" % "0.9.2")
+addSbtPlugin("com.typesafe" % "sbt-mima-plugin" % "1.1.3")
 addSbtPlugin("io.chrisdavenport" % "sbt-mima-version-check" % "0.1.2")
 addSbtPlugin("io.chrisdavenport" % "sbt-no-publish" % "0.1.0")
 
